@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -22,6 +22,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const emailRef = useRef();
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   // Google Sign In
   const handleGoogleSignIn = () => {
@@ -31,6 +32,7 @@ const Login = () => {
       .then((result) => {
         setUser(result.user);
         setSuccess("You have successfully Login");
+        navigate("/")
       })
       .catch((error) => setError(error.message));
   };
@@ -43,8 +45,9 @@ const Login = () => {
       .then((result) => {
         setUser(result.user);
         setSuccess("You have successfully Login");
+        navigate("/")
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   // Email Password Login
@@ -65,6 +68,8 @@ const Login = () => {
         // }
         setUser(result.user);
         setSuccess("You have successfully Login");
+        navigate("/")
+
       })
       .catch((error) => {
         setError(error.message);

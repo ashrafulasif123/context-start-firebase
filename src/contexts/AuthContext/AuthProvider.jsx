@@ -30,10 +30,13 @@ const AuthProvider = ({ children }) => {
         setUser(currentUser);
         setLoading(false);
       }
+      else {
+        setUser(null);
+      }
     });
     // clear the observer the on unmount
     return () => {
-      setUser(null);
+
       unsubscribe();
     };
   }, []);

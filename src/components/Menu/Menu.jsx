@@ -1,15 +1,18 @@
 import { use, useState } from "react";
 // import { FaUser } from "react-icons/fa";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
   const { user, logOut } = use(AuthContext);
+  const navigate = useNavigate()
 
   const handleLogOut = () => {
     logOut()
-      .then(() => {})
+      .then(() => {
+        navigate('/')
+      })
       .catch((error) => {
         console.log(error.message);
       });
@@ -33,18 +36,32 @@ const Menu = () => {
               Home
             </NavLink>
           </li>
-
-          <li>
-            <NavLink to="/login" className={linkClass}>
-              Login
-            </NavLink>
-          </li>
-
+          {
+            !user && (
+              <li>
+                <NavLink to="/login" className={linkClass}>
+                  Login
+                </NavLink>
+              </li>
+            )
+          }
           <li>
             <NavLink to="/register" className={linkClass}>
               Register
             </NavLink>
           </li>
+          {user && (<>
+            <li>
+              <NavLink to="/orders" className={linkClass}>
+                Orders
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/profile" className={linkClass}>
+                Profile
+              </NavLink>
+            </li>
+          </>)}
         </ul>
 
         {/* RIGHT BUTTON */}
@@ -65,7 +82,7 @@ const Menu = () => {
             Sign Out
           </a>
         ) : (
-          <Link to="/">Login</Link>
+          <Link to="/login">Login</Link>
         )}
 
         {/* MOBILE BUTTON */}
