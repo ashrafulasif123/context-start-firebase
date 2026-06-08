@@ -6,12 +6,12 @@ import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 const Menu = () => {
   const [open, setOpen] = useState(false);
   const { user, logOut } = use(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
     logOut()
       .then(() => {
-        navigate('/')
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.message);
@@ -36,32 +36,37 @@ const Menu = () => {
               Home
             </NavLink>
           </li>
-          {
-            !user && (
-              <li>
-                <NavLink to="/login" className={linkClass}>
-                  Login
-                </NavLink>
-              </li>
-            )
-          }
+          {!user && (
+            <li>
+              <NavLink to="/login" className={linkClass}>
+                Login
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/register" className={linkClass}>
               Register
             </NavLink>
           </li>
-          {user && (<>
-            <li>
-              <NavLink to="/orders" className={linkClass}>
-                Orders
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/profile" className={linkClass}>
-                Profile
-              </NavLink>
-            </li>
-          </>)}
+          {user && (
+            <>
+              <li>
+                <NavLink to="/orders" className={linkClass}>
+                  Orders
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/profile" className={linkClass}>
+                  Profile
+                </NavLink>
+              </li>
+            </>
+          )}
+          <li>
+            <NavLink to="/dashboard" className={linkClass}>
+              Dashboard
+            </NavLink>
+          </li>
         </ul>
 
         {/* RIGHT BUTTON */}

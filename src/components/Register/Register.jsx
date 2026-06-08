@@ -1,16 +1,11 @@
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  updateProfile,
-} from "firebase/auth";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 import { use, useState } from "react";
 import { Link } from "react-router";
-import { auth } from "../../firebase.init";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 
 const Register = () => {
-  const { createUser } = use(AuthContext);
+  const { createUser, loading } = use(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -68,6 +63,13 @@ const Register = () => {
       })
       .catch((error) => setError(error.message));
   };
+  if (loading) {
+    return (
+      <div className="min-h-screen relative">
+        <span className="loading loading-bars loading-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">

@@ -6,7 +6,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../../firebase.init";
-import { useContext, useRef, useState } from "react";
+import { use, useRef, useState } from "react";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 
@@ -15,24 +15,22 @@ const gitHubProvider = new GithubAuthProvider();
 gitHubProvider.addScope("user:email");
 
 const Login = () => {
-  const [user, setUser] = useState(null);
+  const { user, signIn, loading } = use(AuthContext);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const emailRef = useRef();
-  const { signIn } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Google Sign In
   const handleGoogleSignIn = () => {
     setError("");
     setSuccess("");
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        setUser(result.user);
+      .then(() => {
         setSuccess("You have successfully Login");
-        navigate("/")
+        navigate("/");
       })
       .catch((error) => setError(error.message));
   };
@@ -42,12 +40,11 @@ const Login = () => {
     setError("");
     setSuccess("");
     signInWithPopup(auth, gitHubProvider)
-      .then((result) => {
-        setUser(result.user);
+      .then(() => {
         setSuccess("You have successfully Login");
-        navigate("/")
+        navigate("/");
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   // Email Password Login
@@ -59,17 +56,15 @@ const Login = () => {
     setError("");
     setSuccess("");
     signIn(email, password)
-      .then((result) => {
+      .then(() => {
         // if (result.user.emailVerified) {
         //   setUser(result.user);
         //   setSuccess("You have successfully Login");
         // } else {
         //   setError("Your Email is not Verified");
         // }
-        setUser(result.user);
         setSuccess("You have successfully Login");
-        navigate("/")
-
+        navigate("/");
       })
       .catch((error) => {
         setError(error.message);
@@ -88,7 +83,13 @@ const Login = () => {
         setError(error.message);
       });
   };
-
+  if (loading) {
+    return (
+      <div className="min-h-screen relative">
+        <span className="loading loading-bars loading-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
