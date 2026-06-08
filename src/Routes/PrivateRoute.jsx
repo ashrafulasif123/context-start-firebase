@@ -1,9 +1,10 @@
 import { use } from "react";
 import { AuthContext } from "../contexts/AuthContext/AuthContext";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = use(AuthContext);
+  const location = useLocation()
   if (loading) {
     return (
       <div className="min-h-screen relative">
@@ -14,7 +15,13 @@ const PrivateRoute = ({ children }) => {
   if (user) {
     return children;
   }
-  return <Navigate to="/login"></Navigate>;
+  return <Navigate
+    to="/login"
+    state={{ from: location }}
+    replace
+  >
+
+  </Navigate>;
 };
 
 export default PrivateRoute;

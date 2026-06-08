@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -22,6 +22,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const emailRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   // Google Sign In
   const handleGoogleSignIn = () => {
@@ -44,7 +46,7 @@ const Login = () => {
         setSuccess("You have successfully Login");
         navigate("/");
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   // Email Password Login
@@ -64,7 +66,7 @@ const Login = () => {
         //   setError("Your Email is not Verified");
         // }
         setSuccess("You have successfully Login");
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         setError(error.message);
